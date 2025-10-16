@@ -1,18 +1,21 @@
-(* ********************************************************************************* *)
-(* FeynRules Model file for the vSMEFT - the effective field theory (EFT) of the Standard Model (SM) extended with right-handed (RH) neutrinos, NR. *)
-(* Contains dimension-5 and dimension-6 Higgs-NR interactions.  *)
-(* The Lagrangian is written in the Feynman Gauge.		 	     	     *)
-(*										     *)
-(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			     *)
-(*										     *)
-(* The renormalisable part of the Lagrangian is based on    	     *)
-(* the default FeynRules SM model file and                           *)
-(* the HeavyN model [arXiv:1411.7305, arXiv:1602.06957].             *)
-(* The dimension-5 and dimension-6 interactions were implemented in [arXiv:1909.04665]. *)
-(* Please cite accordingly.					     		     *)
-(*										     *)
-(* Feynman gauge is set to true.						     *)
-(* ********************************************************************************* *)
+(* **************************************************************************************************************** *)
+(* FeynRules Model file for the vSMEFT - the effective field theory (EFT)                                           *)
+(* of the Standard Model (SM) extended with right-handed (RH) neutrinos, NR.                                        *)
+(* Contains dimension-5 and dimension-6 Higgs-NR interactions.                                                      *)
+(* The Lagrangian is written in the Feynman Gauge.		 	     	                                                *)
+(*										                                                                            *)
+(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			                                                *)
+(*										                                                                            *)
+(* The renormalisable part of the Lagrangian is based on                                                            *)
+(* the default FeynRules SM model file and the HeavyN model developed in                                            *)
+(* D. Alva, T. Han and R. Ruiz, JHEP 02 (2015) 072 [arXiv:1411.7305],                                               *)
+(* C. Degrande, O. Mattelaer, R. Ruiz and J. Turner, PRD 94 (2016) 053002 [arXiv:1602.06957].                       *)
+(* The dimension-5 and dimension-6 interactions were implemented in                                                 *)
+(* J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665].    *)
+(* Please cite accordingly.					     		                                                            *)
+(*										                                                                            *)
+(* Feynman gauge is set to true.						                                                            *)
+(* **************************************************************************************************************** *)
 
 (* ************************** *)
 (* *****  Information   ***** *)
@@ -25,7 +28,7 @@ M$Information = {
   Date         -> "2025 October 15",
   Institutions -> {"University of Padua"},
   Emails       -> {"arsenii.titov@unipd.it"},
-  References   -> {"Butterworth et al., PRD 100 (2019) 115019 [arXiv:1909.04665]"},
+  References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]"},
   URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
 };
 FeynmanGauge = True;
@@ -151,7 +154,7 @@ M$Parameters = {
 		ComplexParameter -> False,
 		(*InteractionOrder -> {NP,-1},*) (* CHANGED QED -1 -> -2 to avoid v^2/Lambda^2 having order '1' instead of 'QED' *)
 		TeX              -> \[CapitalLambda],
-    	Description      -> "EFT cutoff scale [GeV]"
+    	Description      -> "New physics scale [GeV]"
 	},
  
     cNNH == {
