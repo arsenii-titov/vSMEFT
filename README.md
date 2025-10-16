@@ -6,3 +6,5 @@ The FeynRules file `vSMEFT_Higgs-N.fr` extends the default [SM](https://feynrule
 In `SM_v_Majorana.fr` neutrinos are set to be Majorana (SelfConjugate -> True). This is the only difference with respect to the default SM model file `SM.fr` supplied with FeynRules.
 
 The Mathematica notebook `vSMEFT_Higgs-N_UFO.nb` loads and merges the FeynRules models `SM_v_Majorana.fr` and `vSMEFT_Higgs-N.fr`, performs a number of sanity checks, computes Feynman rules and generates the corresponding UFO model `vSMEFT_Higgs-N_UFO` (also available as a zip file `vSMEFT_Higgs-N_UFO.zip`).
+
+The present model was developed in J. M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, *Higgs phenomenology as a probe of sterile neutrinos*, [Phys. Rev. D **100** (2019) 115019](https://doi.org/10.1103/PhysRevD.100.115019) [[arXiv:1909.04665](https://arxiv.org/abs/1909.04665)].
