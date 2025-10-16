@@ -1,6 +1,6 @@
-**FeynRules and UFO model files for the vSMEFT** 
+**FeynRules and UFO model files for <span>$v$</span>SMEFT** 
 
-vSMEFT is the effective field theory (EFT) of the Standard Model (SM) extended with right-handed (RH) neutrinos, $N_R$. 
+The <span>$\nu$</span>SMEFT (also known as NSMEFT, SMNEFT, <span>$N_R$</span>SMEFT) is the effective field theory (EFT) of the Standard Model (SM) extended with right-handed (RH) neutrinos, $N_R$. 
 
 The FeynRules file `vSMEFT_Higgs-N.fr` extends the default [SM](https://feynrules.irmp.ucl.ac.be/wiki/StandardModel) model file and the [HeavyN](https://feynrules.irmp.ucl.ac.be/wiki/HeavyN) model file with **dimension-5 and dimension-6 Higgs-<span>$N_R$</span> interactions**. 
 In `SM_v_Majorana.fr` neutrinos are set to be Majorana (SelfConjugate -> True). This is the only difference with respect to the default SM model file `SM.fr` supplied with FeynRules.
