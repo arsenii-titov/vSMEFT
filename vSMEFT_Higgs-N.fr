@@ -30,7 +30,7 @@ M$Information = {
   Institutions -> {"University of Padua"},
   Emails       -> {"arsenii.titov@unipd.it"},
   References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]",
-                   "A. Titov, 2511.XXXXX"},
+                   "A. Titov, arXiv:2511.XXXXX"},
   URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
 };
 FeynmanGauge = True;

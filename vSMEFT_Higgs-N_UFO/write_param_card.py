@@ -1,6 +1,7 @@
 
-__date__ = "3 june 2010"
+__date__ = "6 March 2020"
 __author__ = 'olivier.mattelaer@uclouvain.be'
+
 
 class ParamCardWriter(object):
     
@@ -117,10 +118,7 @@ class ParamCardWriter(object):
         import cmath
         from parameters import all_parameters
         for parameter in all_parameters:
-            try:
-                exec("%s = %s" % (parameter.name, parameter.value))
-            except Exception:
-                pass
+            exec("%s = %s" % (parameter.name, parameter.value))
         text = "##  Not dependent paramater.\n"
         text += "## Those values should be edited following analytical the \n"
         text += "## analytical expression. Some generator could simply ignore \n"
