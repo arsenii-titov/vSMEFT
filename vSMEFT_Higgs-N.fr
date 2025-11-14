@@ -10,8 +10,9 @@
 (* the default FeynRules SM model file and the HeavyN model developed in                                            *)
 (* D. Alva, T. Han and R. Ruiz, JHEP 02 (2015) 072 [arXiv:1411.7305],                                               *)
 (* C. Degrande, O. Mattelaer, R. Ruiz and J. Turner, PRD 94 (2016) 053002 [arXiv:1602.06957].                       *)
-(* The dimension-5 and dimension-6 interactions were implemented in                                                 *)
+(* The dimension-5 and dimension-6 interactions were originally implemented in                                      *)
 (* J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665].    *)
+(* The present model implementation is described in A. Titov, arXiv:2511.XXXXX                                      *)
 (* Please cite accordingly.					     		                                                            *)
 (*										                                                                            *)
 (* Feynman gauge is set to true.						                                                            *)
@@ -25,10 +26,11 @@ M$ModelName = "vSMEFT_Higgs-N";
 M$Information = {
   Authors      -> {"A. Titov"},
   Version      -> "1.0",
-  Date         -> "15 October 2025",
+  Date         -> "13 November 2025",
   Institutions -> {"University of Padua"},
   Emails       -> {"arsenii.titov@unipd.it"},
-  References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]"},
+  References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]",
+                   "A. Titov, 2511.XXXXX"},
   URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
 };
 FeynmanGauge = True;
