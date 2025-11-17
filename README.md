@@ -20,4 +20,4 @@ If you use the model files, please cite these references.
   
 2. <a id="ref2025"></a> A. Titov, 
 *FeynRules and UFO model files for* <span>$\nu$</span>*SMEFT: Higgs-*<span>$N_R$</span> *operators of dimensions five and six*, 
-[arXiv:2511.XXXXX](https://arxiv.org/abs/2511.XXXXX).
+[arXiv:2511.10733](https://arxiv.org/abs/2511.10733).
