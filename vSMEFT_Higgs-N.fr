@@ -12,7 +12,7 @@
 (* C. Degrande, O. Mattelaer, R. Ruiz and J. Turner, PRD 94 (2016) 053002 [arXiv:1602.06957].                       *)
 (* The dimension-5 and dimension-6 interactions were originally implemented in                                      *)
 (* J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665].    *)
-(* The present model implementation is described in A. Titov, arXiv:2511.XXXXX                                      *)
+(* The present model implementation is described in A. Titov, arXiv:2511.10733                                      *)
 (* Please cite accordingly.					     		                                                            *)
 (*										                                                                            *)
 (* Feynman gauge is set to true.						                                                            *)
@@ -30,7 +30,7 @@ M$Information = {
   Institutions -> {"University of Padua"},
   Emails       -> {"arsenii.titov@unipd.it"},
   References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]",
-                   "A. Titov, arXiv:2511.XXXXX"},
+                   "A. Titov, arXiv:2511.10733"},
   URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
 };
 FeynmanGauge = True;
