@@ -1,0 +1,170 @@
+(* **************************************************************************************************************** *)
+(* FeynRules Model file for the vSMEFT - the effective field theory (EFT)                                           *)
+(* of the Standard Model (SM) extended with right-handed (RH) neutrinos, NR.                                        *)
+(* Contains dimension-6  single-NR four-fermion operators.                                                          *)
+(* The Lagrangian is written in the Feynman Gauge.		 	     	                                                *)
+(*										                                                                            *)
+(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			                                                *)
+(*										                                                                            *)
+(* The four-fermion operators were originally implemented in                                                        *)
+(* G.Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 09 (2021) 039 [arXiv:2105.13851],                   *)
+(* R. Beltran, G. Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 01 (2022) 044 [arXiv:2110.15096].      *)
+(* The present model implementation is described in A. Titov, arXiv:2511.10733.                                     *)
+(* Please cite accordingly.					     		                                                            *)
+(*										                                                                            *)
+(* Feynman gauge is set to true.						                                                            *)
+(* **************************************************************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "vSMEFT_4-fermions_single-N";
+
+M$Information = {
+  Authors      -> {"A. Titov"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"G.Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 09 (2021) 039 [arXiv:2105.13851]",
+                   "R. Beltran, G. Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 01 (2022) 044 [arXiv:2110.15096]",
+                   "A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+FeynmanGauge = True;
+
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+(* v2.0: Public release of the model files containing all baryon-number-conserving dimension-5 and dimension-6 operators *)
+(* v1.0: Public release of the model file containing dimension-5 and dimension-6 Higgs-NR operators *)
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+M$Parameters = {
+	(* External Parameters *)
+ 
+    cLNLe == {
+        ParameterType -> External,
+        BlockName     -> OPERATORLNLe,
+        Indices       -> {Index[Generation],Index[Generation],Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cLNLe[i_?NumericQ, j_?NumericQ, k_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, LNLe],
+        Description -> "Wilson coefficients cLNLe"
+    },
+
+    cduNe == {
+        ParameterType -> External,
+        BlockName     -> OPERATORduNe,
+        Indices       -> {Index[Generation],Index[Generation],Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cduNe[i_?NumericQ, j_?NumericQ, k_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, duNe],
+        Description -> "Wilson coefficients cduNe"
+    },
+
+    cLNQd == {
+        ParameterType -> External,
+        BlockName     -> OPERATORLNQd,
+        Indices       -> {Index[Generation],Index[Generation],Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cLNQd[i_?NumericQ, j_?NumericQ, k_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, LNQd],
+        Description -> "Wilson coefficients cLNQd"
+    },
+
+    cLdQN == {
+        ParameterType -> External,
+        BlockName     -> OPERATORLdQN,
+        Indices       -> {Index[Generation],Index[Generation],Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cLdQN[i_?NumericQ, j_?NumericQ, k_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, LdQN],
+        Description -> "Wilson coefficients cLdQN"
+    },
+
+    cQuNL == {
+        ParameterType -> External,
+        BlockName     -> OPERATORQuNL,
+        Indices       -> {Index[Generation],Index[Generation],Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cQuNL[i_?NumericQ, j_?NumericQ, k_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, QuNL],
+        Description -> "Wilson coefficients cQuNL"
+    }
+
+};
+
+
+M$InteractionOrderHierarchy = {
+	{QCD,1},
+	{QED,2},
+    {NP,2}
+};
+
+(*M$InteractionOrderLimit = {
+    {QED,4}
+};*)
+
+
+(* ************************************* *)
+(* *****   Dimension-6 Lagrangian  ***** *)
+(* ************************************* *)
+
+
+(* ************************************* *)
+(* *****     Single-N operators    ***** *)
+(* ************************************* *)
+
+OLNLe := Block[{opLNLe,sp1,sp2,ii,jj,ff1,ff2,ff3},
+   
+    opLNLe = ExpandIndices[cLNLe[ff1,ff2,ff3] LLbar[sp1,ii,ff1].NR[sp1,1] Eps[ii, jj] LLbar[sp2,jj,ff2].lR[sp2,ff3]];
+    
+    opLNLe + HC[opLNLe]
+];
+
+OduNe := Block[{opduNe,mu,sp1,sp2,sp3,sp4,cc,ff1,ff2,ff3},
+  
+  opduNe = ExpandIndices[cduNe[ff1,ff2,ff3] dRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].uR[sp2,ff2,cc] NRbar[sp3,1].Ga[mu,sp3,sp4].lR[sp4,ff3]];
+  
+  opduNe + HC[opduNe]
+];
+
+OLNQd := Block[{opLNQd,sp1,sp2,cc,ii,jj,ff1,ff2,ff3},
+  
+  opLNQd = ExpandIndices[cLNQd[ff1,ff2,ff3] LLbar[sp1,ii,ff1].NR[sp1,1] Eps[ii, jj] QLbar[sp2,jj,ff2,cc].dR[sp2,ff3,cc]];
+  
+  opLNQd + HC[opLNQd]
+];
+
+OLdQN := Block[{opLdQN,sp1,sp2,cc,ii,jj,ff1,ff2,ff3},
+  
+  opLdQN = ExpandIndices[cLdQN[ff1,ff2,ff3] LLbar[sp1,ii,ff1].dR[sp1,ff2,cc] Eps[ii, jj] QLbar[sp2,jj,ff3,cc].NR[sp2,1]];
+  
+  opLdQN + HC[opLdQN]
+];
+
+OQuNL := Block[{opQuNL,sp1,sp2,cc,ii,ff1,ff2,ff3},
+  
+  opQuNL = ExpandIndices[cQuNL[ff1,ff2,ff3] QLbar[sp1,ii,ff1,cc].uR[sp1,ff2,cc] NRbar[sp2,1].LL[sp2,ii,ff3]];
+  
+  opQuNL + HC[opQuNL]
+];
+
+LN4fermions1 := (OLNLe + OduNe + OLNQd + OLdQN + OQuNL)/Lambda^2;
+
+
+(* ********************************************************* *)
+(* *****     Full 4-fermion N effective Lagrangian     ***** *)
+(* ********************************************************* *)
+
+Leff4fermions1:= LNSM + LN4fermions1;

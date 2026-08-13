@@ -1,0 +1,402 @@
+(* **************************************************************************************************************** *)
+(* FeynRules Model file for the vSM -                                            									*)
+(* the Standard Model (SM) extended with right-handed (RH) neutrinos, NR.                                        	*)
+(* Contains renormalisable interactions of NR.                                                      				*)
+(* The Lagrangian is written in the Feynman Gauge.		 	     	                                                *)
+(*										                                                                            *)
+(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			                                                *)
+(*										                                                                            *)
+(* This file is based on                                                            								*)
+(* the default FeynRules SM model file and the HeavyN model developed in                                            *)
+(* D. Alva, T. Han and R. Ruiz, JHEP 02 (2015) 072 [arXiv:1411.7305],                                               *)
+(* C. Degrande, O. Mattelaer, R. Ruiz and J. Turner, PRD 94 (2016) 053002 [arXiv:1602.06957].                       *)
+(* The present model implementation is described in A. Titov, arXiv:2511.10733.                                     *)
+(* Please cite accordingly.					     		                                                            *)
+(*										                                                                            *)
+(* Feynman gauge is set to true.						                                                            *)
+(* **************************************************************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "vSM";
+
+M$Information = {
+  Authors      -> {"A. Titov"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]",
+                   "G.Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 09 (2021) 039 [arXiv:2105.13851]",
+                   "R. Beltran, G. Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 01 (2022) 044 [arXiv:2110.15096]",
+                   "A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+FeynmanGauge = True;
+
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+(* v2.0: Public release of the model files containing all baryon-number-conserving dimension-5 and dimension-6 operators *)
+(* v1.0: Public release of the model file containing dimension-5 and dimension-6 Higgs-NR operators *)
+
+IndexRange[Index[NuGeneration]] = Range[6];
+IndexStyle[NuGeneration, kk];
+
+IndexRange[Index[HNLgeneration]] = Range[1];
+IndexStyle[HNLgeneration, gg];
+
+(*IndexStyle[NuGeneration, ff1];*)
+(*IndexStyle[NuGeneration, ff2];*)
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+M$Parameters = {
+	(* External Parameters *)
+
+	VeN1 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+    	OrderBlock       -> 1, 
+    	Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,eN1],
+    	Description      -> "Mixing between ve flavor/gauge state and N1 mass state"
+	},
+
+	VeN2 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+    	OrderBlock       -> 2, 
+    	Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,eN2],
+    	Description      -> "Mixing between ve flavor/gauge state and N2 mass state"
+	},
+
+	VeN3 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+		OrderBlock       -> 3, 
+		Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,eN3],
+			Description      -> "Mixing between ve flavor/gauge state and N3 mass state"
+	},
+
+	VmuN1 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+		OrderBlock       -> 4, 
+		Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,muN1],
+    	Description      -> "Mixing between vm flavor/gauge state and N1 mass state"
+	},
+
+	VmuN2 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+		OrderBlock       -> 5, 
+		Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,muN2],
+    	Description      -> "Mixing between vm flavor/gauge state and N2 mass state"
+	},
+
+	VmuN3 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+		OrderBlock       -> 6, 
+		Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,muN3],
+    	Description      -> "Mixing between vm flavor/gauge state and N3 mass state"
+	},
+
+	VtaN1 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+    	OrderBlock       -> 7, 
+    	Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,taN1],
+    	Description      -> "Mixing between vt flavor/gauge state and N1 mass state"
+	},
+
+	VtaN2 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+    	OrderBlock       -> 8, 
+    	Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,taN2],
+    	Description      -> "Mixing between vt flavor/gauge state and N2 mass state"
+	},
+
+	VtaN3 == {
+    	ParameterType    -> External, 
+		BlockName        -> NUMIXING, 
+    	OrderBlock       -> 9, 
+    	Value            -> 0.0,
+		ComplexParameter -> False,
+		TeX              -> Subscript[V,taN3],
+    	Description      -> "Mixing between vt flavor/gauge state and N3 mass state"
+	},
+
+	(*   vSMEFT Block   *)
+	Lambda == {
+    	ParameterType    -> External, 
+		BlockName        -> NEWPHYSICSSCALE,
+    	OrderBlock       -> 1,
+    	Value            -> 1000.0,
+		ComplexParameter -> False,
+		(*InteractionOrder -> {NP,-1},*) (* CHANGED QED -1 -> -2 to avoid v^2/Lambda^2 having order '1' instead of 'QED' *)
+		TeX              -> \[CapitalLambda],
+    	Description      -> "New physics scale [GeV]"
+	},
+ 
+	(* Internal Parameters *)
+	gN   == {
+		ParameterType	 -> Internal,
+		Definitions      -> {gN->ee/sw},
+		InteractionOrder -> {QED,1}, (* CHANGED NP -> QED *)
+		TeX		 -> Subscript[g,N]
+	},
+	(* gvSMEFT == {
+		ParameterType	 -> Internal,
+		Definitions      -> {gvSMEFT->ee*vev*vev/Lambda/Lambda/sw/2}
+	},*)
+	gAux4F == {
+    	ParameterType -> Internal,
+    	Value -> 1,
+    	InteractionOrder -> {AUX,1},
+    	TeX -> Subscript[g,aux],
+    	Description -> "Unit bookkeeping coupling for non-propagating four-fermion auxiliaries"
+    },
+
+(* ************************** *)
+(* *****   Containers   ***** *)
+(* ************************** *)
+
+	PMNS == { 
+		ParameterType	-> Internal,
+		Indices			-> {Index[Generation], Index[NuGeneration]},
+		Unitary			-> False,
+		Value			-> {	PMNS[1,1]->1, PMNS[1,2]->0, PMNS[1,3]->0, PMNS[1,4]->VeN1,  PMNS[1,5]->VeN2,  PMNS[1,6]->VeN3,
+								PMNS[2,1]->0, PMNS[2,2]->1, PMNS[2,3]->0, PMNS[2,4]->VmuN1, PMNS[2,5]->VmuN2, PMNS[2,6]->VmuN3,
+								PMNS[3,1]->0, PMNS[3,2]->0, PMNS[3,3]->1, PMNS[3,4]->VtaN1, PMNS[3,5]->VtaN2, PMNS[3,6]->VtaN3},
+		TeX				-> Subscript[V,PMNS],
+		Description		-> "3x6 v-Nu Mixing Matrix"
+	},  
+
+  	numass == {
+    	ParameterType	-> Internal,
+    	Indices			-> {Index[NuGeneration], Index[NuGeneration]},
+    	Value			-> {
+			numass[1,1]->0, numass[1,2]->0, numass[1,3]->0, numass[1,4]->0,   numass[1,5]->0,   numass[1,6]->0, 
+			numass[2,1]->0, numass[2,2]->0, numass[2,3]->0, numass[2,4]->0,   numass[2,5]->0,   numass[2,6]->0, 
+			numass[3,1]->0, numass[3,2]->0, numass[3,3]->0, numass[3,4]->0,   numass[3,5]->0,   numass[3,6]->0, 
+			numass[4,1]->0, numass[4,2]->0, numass[4,3]->0, numass[4,4]->mN1, numass[4,5]->0,   numass[4,6]->0, 
+			numass[5,1]->0, numass[5,2]->0, numass[5,3]->0, numass[5,4]->0,   numass[5,5]->mN2, numass[5,6]->0, 
+			numass[6,1]->0, numass[6,2]->0, numass[6,3]->0, numass[6,4]->0,   numass[6,5]->0,   numass[6,6]->mN3}, 
+   		InteractionOrder -> {QED, 0},
+    	TeX				-> Superscript[M, vN],
+    	Description		-> "Neutrino mass matrix"
+	}
+
+};
+
+
+M$InteractionOrderHierarchy = {
+	{QCD,1},
+	{QED,2}
+};
+
+(*M$InteractionOrderLimit = {
+    {QED,4}
+};*)
+
+
+(* ************************** *)
+(* **** Particle classes **** *)
+(* ************************** *)
+M$ClassesDescription = {
+    (* HNL: physical fields *)
+    (* Majorana Neutrino *)
+    F[131] == {
+        ClassName       -> N1,
+        SelfConjugate   -> True,
+        Mass            -> {mN1,300.},
+        Width           -> {WN1,0.303},
+        PropagatorLabel -> "N1",
+        PropagatorType  -> Straight,
+        PropagatorArrow -> False,
+        ParticleName    -> "N1",
+        PDG             -> {9900012},
+        FullName        -> "N1"
+    },
+
+    F[132] == {
+        ClassName        -> N2,
+        SelfConjugate    -> True,
+        Mass            -> {mN2,500.},
+        Width            -> {WN2,1.50},
+        PropagatorLabel    -> "N2",
+        PropagatorType  -> Straight,
+        PropagatorArrow -> False,
+        ParticleName    -> "N2",
+        PDG             -> {9900014},
+        FullName        -> "N2"
+    },
+
+    F[133] == {
+        ClassName        -> N3,
+        SelfConjugate    -> True,
+        Mass            -> {mN3,1000.},
+        Width            -> {WN3,12.3},
+        PropagatorLabel    -> "N3",
+        PropagatorType  -> Straight,
+        PropagatorArrow -> False,
+        ParticleName    -> "N3",
+        PDG             -> {9900016},
+        FullName        -> "N3"
+    },
+    
+    (* F[131] == {
+        ClassName        -> HNL,
+        ClassMembers     -> {N1,N2,N3},
+        Indices          -> {Index[HNLgeneration]},
+        FlavorIndex      -> HNLgeneration,
+        SelfConjugate    -> True,
+        Mass             -> {mN, {mN1,300.}, {mN2,500.}, {mN3,1000.}},
+        Width            -> {WN, {WN1,0.303}, {WN2,1.50}, {WN3,12.3}},
+        PropagatorLabel  -> {"N", "N1", "N2", "N3"} ,
+        PropagatorType   -> Straight,
+        PropagatorArrow  -> False,
+        PDG              -> {9990012,9990014,9990016},
+        ParticleName     -> {"N1","N2","N3"},
+        FullName         -> {"N1","N2","N3"}
+    }, *)
+        
+	(* auxiliary container *)
+	F[140] == { 
+		ClassName      	-> vNu, 
+		Unphysical     	-> True, 
+		Indices        	-> {Index[NuGeneration]},
+		FlavorIndex    	-> NuGeneration,
+		SelfConjugate	-> False,
+		Definitions    	-> {vNu[sp1_,1]->ve[sp1],
+							vNu[sp1_,2]->vm[sp1],
+							vNu[sp1_,3]->vt[sp1],
+							vNu[sp1_,4]->N1[sp1],
+							vNu[sp1_,5]->N2[sp1],
+							vNu[sp1_,6]->N3[sp1]}
+	},
+ 
+    (* HNL: unphysical fields *)
+    F[141] == {
+        ClassName      -> NR,
+        Unphysical     -> True,
+        Indices        -> {Index[HNLgeneration]},
+        FlavorIndex    -> HNLgeneration,
+        SelfConjugate  -> False,
+        QuantumNumbers -> {Y -> 0, LeptonNumber -> 1},
+        Definitions    -> {NR[sp1_,gg_] :> Module[{sp2}, ProjP[sp1,sp2] N1[sp2]]}
+    }
+
+};
+
+
+(* ************************************* *)
+(* *****   Dimension-4 Lagrangian  ***** *)
+(* ************************************* *)
+
+LNKin :=   I/2 N1bar[s1].Ga[v,s1,s2].del[N1[s2],v] - 1/2 mN1 N1bar[s1]N1[s1] \
+ 	    +  I/2 N2bar[s1].Ga[v,s1,s2].del[N2[s2],v] - 1/2 mN2 N2bar[s1]N2[s1] \
+	    +  I/2 N3bar[s1].Ga[v,s1,s2].del[N3[s2],v] - 1/2 mN3 N3bar[s1]N3[s1];
+
+(* Charge Current *)
+LNCCbare :=   gN/Sqrt[2] *(  VeN1 * N1bar.W[m].ProjM[m].e	\
+           	 	  		  + VmuN1 * N1bar.W[m].ProjM[m].mu	\
+						  + VtaN1 * N1bar.W[m].ProjM[m].ta )	\
+	  	  	+ gN/Sqrt[2] *(  VeN2 * N2bar.W[m].ProjM[m].e	\
+           	 			  + VmuN2 * N2bar.W[m].ProjM[m].mu	\
+						  + VtaN2 * N2bar.W[m].ProjM[m].ta )	\
+		    + gN/Sqrt[2] *(  VeN3 * N3bar.W[m].ProjM[m].e	\
+           	 			  + VmuN3 * N3bar.W[m].ProjM[m].mu	\
+						  + VtaN3 * N3bar.W[m].ProjM[m].ta );
+LNCC := LNCCbare + HC[LNCCbare];
+
+(* Neutral Current *)
+LNNCBare :=   1/2 * gN/cw *(  VeN1 * N1bar.Z[m].ProjM[m].ve	\
+           	  			   + VmuN1 * N1bar.Z[m].ProjM[m].vm	\
+        		   		   + VtaN1 * N1bar.Z[m].ProjM[m].vt )	\
+		    + 1/2 * gN/cw *(  VeN2 * N2bar.Z[m].ProjM[m].ve	\
+		           	  	   + VmuN2 * N2bar.Z[m].ProjM[m].vm	\
+        		   		   + VtaN2 * N2bar.Z[m].ProjM[m].vt )	\
+	    	+ 1/2 * gN/cw *(  VeN3 * N3bar.Z[m].ProjM[m].ve	\
+		           	  	   + VmuN3 * N3bar.Z[m].ProjM[m].vm	\
+        		   		   + VtaN3 * N3bar.Z[m].ProjM[m].vt );
+LNNC := LNNCBare + HC[LNNCBare];
+
+(* Higgs Interaction *)
+LNHbare := 	- gN*mN1/(2*MW) *( VeN1 * N1bar.ProjM.ve H  \
+							+ VmuN1 * N1bar.ProjM.vm H	\
+							+ VtaN1 * N1bar.ProjM.vt H )	\
+			- gN*mN2/(2*MW) *( VeN2 * N2bar.ProjM.ve H	\
+							+ VmuN2 * N2bar.ProjM.vm H	\
+							+ VtaN2 * N2bar.ProjM.vt H )	\
+			- gN*mN3/(2*MW) *( VeN3 * N3bar.ProjM.ve H	\
+							+ VmuN3 * N3bar.ProjM.vm H	\
+							+ VtaN3 * N3bar.ProjM.vt H );
+LNHiggs := LNHbare + HC[LNHbare]; (* LNH -> LNHiggs RENAMED TO AVOID CONFLICT WITH OLNH *)
+
+(* Goldstone Interaction *)
+LNG := Block[{feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    LNGbare :=	  I *gN*mN1/(2*MW) 	*(	VeN1   * vebar.ProjP.N1 G0	\
+								+	VmuN1  * vmbar.ProjP.N1 G0	\
+								+	VtaN1  * vtbar.ProjP.N1 G0)	\
+			+ I *gN*mN2/(2*MW) 	*(	VeN2   * vebar.ProjP.N2 G0	\
+								+	VmuN2  * vmbar.ProjP.N2 G0	\
+								+	VtaN2  * vtbar.ProjP.N2 G0)	\
+			+ I *gN*mN3/(2*MW) 	*(	VeN3   * vebar.ProjP.N3 G0	\
+								+	VmuN3  * vmbar.ProjP.N3 G0	\
+								+	VtaN3  * vtbar.ProjP.N3 G0)	\
+		+ I *gN*mN1/(Sqrt[2]*MW) *(	VeN1   *  ebar.ProjP.N1 GPbar	\
+								+	VmuN1  * mubar.ProjP.N1 GPbar	\
+								+	VtaN1  * tabar.ProjP.N1 GPbar)	\
+		+ I *gN*mN2/(Sqrt[2]*MW) *(	VeN2   *  ebar.ProjP.N2 GPbar	\
+								+	VmuN2  * mubar.ProjP.N2 GPbar	\
+								+	VtaN2  * tabar.ProjP.N2 GPbar)	\
+		+ I *gN*mN3/(Sqrt[2]*MW) *(	VeN3   *  ebar.ProjP.N3 GPbar	\
+								+	VmuN3  * mubar.ProjP.N3 GPbar	\
+								+	VtaN3  * tabar.ProjP.N3 GPbar);
+    
+    LNGbare + HC[LNGbare]/.feynmangaugerules
+];
+
+(* Effective 1-loop GGh coupling *)
+Ifermion[x_,y_]:= 1/3 + (11 y)/90 + (22 y^2)/315 + (74 y^3)/1575 + (7 x)/90 + (16 y x)/315 + (58 y^2 x)/1575 + (2 x^2)/63 + (2 y x^2)/75 + (26 x^3)/1575;
+
+LSMloop := Block[{mu,nu,aa},
+    gs^2/(16 Pi^2) Ifermion[MH^2/(4 MT^2),0] (H/vev) (del[G[nu,aa],mu] - del[G[mu,aa], nu])^2 (* simple derivative to avoid GGGh, GGGGh couplings *)
+];
+
+
+(* ************************************* *)
+(* *****     Full N Lagrangian     ***** *)
+(* ************************************* *)
+
+LNren:= LNKin + LNCC + LNNC + LNHiggs + LNG;
+
+
+(* Combine Lagrangian *)
+
+LNSM := LSM + LSMloop + LNren;

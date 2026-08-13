@@ -1,0 +1,375 @@
+# This file was automatically created by FeynRules 2.3.49
+# Mathematica version: 13.3.1 for Mac OS X ARM (64-bit) (July 24, 2023)
+# Date: Mon 10 Aug 2026 19:49:25
+
+
+# 
+# This is the logfile for the model vSMEFT_4-fermions_single-N_aux
+
+# Authors: A. Titov, auxiliary-field reformulation prepared with Codex
+# Model version: 2.0
+# Checking the Quantum numbers
+   * Electric charge defined.
+# Checking the Lagrangians
+   * All Lagrangians are ok.
+#
+# Particle definitions
+#
+
+   * No particles removed. All particles correspond to GenInt setup.
+
+# Automatically assigned PDG numbers
+   * Assigned PDG number 9000001 to particle ghA
+   * Assigned PDG number 9000002 to particle ghZ
+   * Assigned PDG number 9000003 to particle ghWp
+   * Assigned PDG number 9000004 to particle ghWm
+
+
+# Compulsory PDG codes:
+   * Class SM leptons complete.
+   * Class SM neutrinos complete.
+   * Class SM quarks complete.
+   * Class SM gauge bosons complete.
+#
+# Parameter definitions
+#
+
+   * All parameters are ok.
+
+
+# Vertices
+   * Calling FeynmanRules for 1 Lagrangians.
+   * Number of classes vertices: 1172
+   * Number of flavored vertices: 1216
+   * Saved vertices in InterfaceRun[ 1 ].
+   * Checked QNumber conservation.
+      - Quantum number GhostNumber conserved in all vertices.
+      - Quantum number LeptonNumber NOT conserved in the following vertices
+          {xLNLeUm1, ebar, ve}
+          {xLNLeUm1, mubar, ve}
+          {xLNLeUm1, tabar, ve}
+          {xLNLeUm1, ebar, vm}
+          {xLNLeUm1, mubar, vm}
+          {xLNLeUm1, tabar, vm}
+          {xLNLeUm1, ebar, vt}
+          {xLNLeUm1, mubar, vt}
+          {xLNLeUm1, tabar, vt}
+          {xLNLeUm2, ebar, ve}
+          {xLNLeUm2, mubar, ve}
+          {xLNLeUm2, tabar, ve}
+          {xLNLeUm2, ebar, vm}
+          {xLNLeUm2, mubar, vm}
+          {xLNLeUm2, tabar, vm}
+          {xLNLeUm2, ebar, vt}
+          {xLNLeUm2, mubar, vt}
+          {xLNLeUm2, tabar, vt}
+          {xLNLeUm3, ebar, ve}
+          {xLNLeUm3, mubar, ve}
+          {xLNLeUm3, tabar, ve}
+          {xLNLeUm3, ebar, vm}
+          {xLNLeUm3, mubar, vm}
+          {xLNLeUm3, tabar, vm}
+          {xLNLeUm3, ebar, vt}
+          {xLNLeUm3, mubar, vt}
+          {xLNLeUm3, tabar, vt}
+          {xLNLeVm1, ebar, ve}
+          {xLNLeVm1, mubar, ve}
+          {xLNLeVm1, tabar, ve}
+          {xLNLeVm1, ebar, vm}
+          {xLNLeVm1, mubar, vm}
+          {xLNLeVm1, tabar, vm}
+          {xLNLeVm1, ebar, vt}
+          {xLNLeVm1, mubar, vt}
+          {xLNLeVm1, tabar, vt}
+          {xLNLeVm2, ebar, ve}
+          {xLNLeVm2, mubar, ve}
+          {xLNLeVm2, tabar, ve}
+          {xLNLeVm2, ebar, vm}
+          {xLNLeVm2, mubar, vm}
+          {xLNLeVm2, tabar, vm}
+          {xLNLeVm2, ebar, vt}
+          {xLNLeVm2, mubar, vt}
+          {xLNLeVm2, tabar, vt}
+          {xLNLeVm3, ebar, ve}
+          {xLNLeVm3, mubar, ve}
+          {xLNLeVm3, tabar, ve}
+          {xLNLeVm3, ebar, vm}
+          {xLNLeVm3, mubar, vm}
+          {xLNLeVm3, tabar, vm}
+          {xLNLeVm3, ebar, vt}
+          {xLNLeVm3, mubar, vt}
+          {xLNLeVm3, tabar, vt}
+          {xLNLeUm1bar, N1, e}
+          {xLNLeUm2bar, N1, mu}
+          {xLNLeUm3bar, N1, ta}
+          {xLNLeVm1bar, N1, e}
+          {xLNLeVm2bar, N1, mu}
+          {xLNLeVm3bar, N1, ta}
+          {xLNQdUm1bar, N1, e}
+          {xLNQdUm2bar, N1, mu}
+          {xLNQdUm3bar, N1, ta}
+          {xLNQdVm1bar, N1, e}
+          {xLNQdVm2bar, N1, mu}
+          {xLNQdVm3bar, N1, ta}
+          {xQuNLUm1bar, N1, e}
+          {xQuNLUm2bar, N1, mu}
+          {xQuNLUm3bar, N1, ta}
+          {xQuNLVm1bar, N1, e}
+          {xQuNLVm2bar, N1, mu}
+          {xQuNLVm3bar, N1, ta}
+          {xQuNLUm1, ebar, N1}
+          {xQuNLUm2, mubar, N1}
+          {xQuNLUm3, tabar, N1}
+          {xQuNLVm1, ebar, N1}
+          {xQuNLVm2, mubar, N1}
+          {xQuNLVm3, tabar, N1}
+          {xLNLeUm1bar, ve, e}
+          {xLNLeUm1bar, ve, mu}
+          {xLNLeUm1bar, ve, ta}
+          {xLNLeUm1bar, vm, e}
+          {xLNLeUm1bar, vm, mu}
+          {xLNLeUm1bar, vm, ta}
+          {xLNLeUm1bar, vt, e}
+          {xLNLeUm1bar, vt, mu}
+          {xLNLeUm1bar, vt, ta}
+          {xLNLeUm2bar, ve, e}
+          {xLNLeUm2bar, ve, mu}
+          {xLNLeUm2bar, ve, ta}
+          {xLNLeUm2bar, vm, e}
+          {xLNLeUm2bar, vm, mu}
+          {xLNLeUm2bar, vm, ta}
+          {xLNLeUm2bar, vt, e}
+          {xLNLeUm2bar, vt, mu}
+          {xLNLeUm2bar, vt, ta}
+          {xLNLeUm3bar, ve, e}
+          {xLNLeUm3bar, ve, mu}
+          {xLNLeUm3bar, ve, ta}
+          {xLNLeUm3bar, vm, e}
+          {xLNLeUm3bar, vm, mu}
+          {xLNLeUm3bar, vm, ta}
+          {xLNLeUm3bar, vt, e}
+          {xLNLeUm3bar, vt, mu}
+          {xLNLeUm3bar, vt, ta}
+          {xLNLeVm1bar, ve, e}
+          {xLNLeVm1bar, ve, mu}
+          {xLNLeVm1bar, ve, ta}
+          {xLNLeVm1bar, vm, e}
+          {xLNLeVm1bar, vm, mu}
+          {xLNLeVm1bar, vm, ta}
+          {xLNLeVm1bar, vt, e}
+          {xLNLeVm1bar, vt, mu}
+          {xLNLeVm1bar, vt, ta}
+          {xLNLeVm2bar, ve, e}
+          {xLNLeVm2bar, ve, mu}
+          {xLNLeVm2bar, ve, ta}
+          {xLNLeVm2bar, vm, e}
+          {xLNLeVm2bar, vm, mu}
+          {xLNLeVm2bar, vm, ta}
+          {xLNLeVm2bar, vt, e}
+          {xLNLeVm2bar, vt, mu}
+          {xLNLeVm2bar, vt, ta}
+          {xLNLeVm3bar, ve, e}
+          {xLNLeVm3bar, ve, mu}
+          {xLNLeVm3bar, ve, ta}
+          {xLNLeVm3bar, vm, e}
+          {xLNLeVm3bar, vm, mu}
+          {xLNLeVm3bar, vm, ta}
+          {xLNLeVm3bar, vt, e}
+          {xLNLeVm3bar, vt, mu}
+          {xLNLeVm3bar, vt, ta}
+          {xLNLeUm1, ebar, N1}
+          {xLNLeUm2, mubar, N1}
+          {xLNLeUm3, tabar, N1}
+          {xLNLeVm1, ebar, N1}
+          {xLNLeVm2, mubar, N1}
+          {xLNLeVm3, tabar, N1}
+          {xLNQdUm1, ebar, N1}
+          {xLNQdUm2, mubar, N1}
+          {xLNQdUm3, tabar, N1}
+          {xLNQdVm1, ebar, N1}
+          {xLNQdVm2, mubar, N1}
+          {xLNQdVm3, tabar, N1}
+          {xLdQNUu1, bbar, e}
+          {xLdQNUu1, dbar, e}
+          {xLdQNUu1, sbar, e}
+          {xLdQNUu1, bbar, mu}
+          {xLdQNUu1, dbar, mu}
+          {xLdQNUu1, sbar, mu}
+          {xLdQNUu1, bbar, ta}
+          {xLdQNUu1, dbar, ta}
+          {xLdQNUu1, sbar, ta}
+          {xLdQNUu1bar, ebar, b}
+          {xLdQNUu1bar, ebar, d}
+          {xLdQNUu1bar, ebar, s}
+          {xLdQNUu1bar, mubar, b}
+          {xLdQNUu1bar, mubar, d}
+          {xLdQNUu1bar, mubar, s}
+          {xLdQNUu1bar, tabar, b}
+          {xLdQNUu1bar, tabar, d}
+          {xLdQNUu1bar, tabar, s}
+          {xLdQNUu2, bbar, e}
+          {xLdQNUu2, dbar, e}
+          {xLdQNUu2, sbar, e}
+          {xLdQNUu2, bbar, mu}
+          {xLdQNUu2, dbar, mu}
+          {xLdQNUu2, sbar, mu}
+          {xLdQNUu2, bbar, ta}
+          {xLdQNUu2, dbar, ta}
+          {xLdQNUu2, sbar, ta}
+          {xLdQNUu2bar, ebar, b}
+          {xLdQNUu2bar, ebar, d}
+          {xLdQNUu2bar, ebar, s}
+          {xLdQNUu2bar, mubar, b}
+          {xLdQNUu2bar, mubar, d}
+          {xLdQNUu2bar, mubar, s}
+          {xLdQNUu2bar, tabar, b}
+          {xLdQNUu2bar, tabar, d}
+          {xLdQNUu2bar, tabar, s}
+          {xLdQNUu3, bbar, e}
+          {xLdQNUu3, dbar, e}
+          {xLdQNUu3, sbar, e}
+          {xLdQNUu3, bbar, mu}
+          {xLdQNUu3, dbar, mu}
+          {xLdQNUu3, sbar, mu}
+          {xLdQNUu3, bbar, ta}
+          {xLdQNUu3, dbar, ta}
+          {xLdQNUu3, sbar, ta}
+          {xLdQNUu3bar, ebar, b}
+          {xLdQNUu3bar, ebar, d}
+          {xLdQNUu3bar, ebar, s}
+          {xLdQNUu3bar, mubar, b}
+          {xLdQNUu3bar, mubar, d}
+          {xLdQNUu3bar, mubar, s}
+          {xLdQNUu3bar, tabar, b}
+          {xLdQNUu3bar, tabar, d}
+          {xLdQNUu3bar, tabar, s}
+          {xLdQNVu1, bbar, e}
+          {xLdQNVu1, dbar, e}
+          {xLdQNVu1, sbar, e}
+          {xLdQNVu1, bbar, mu}
+          {xLdQNVu1, dbar, mu}
+          {xLdQNVu1, sbar, mu}
+          {xLdQNVu1, bbar, ta}
+          {xLdQNVu1, dbar, ta}
+          {xLdQNVu1, sbar, ta}
+          {xLdQNVu1bar, ebar, b}
+          {xLdQNVu1bar, ebar, d}
+          {xLdQNVu1bar, ebar, s}
+          {xLdQNVu1bar, mubar, b}
+          {xLdQNVu1bar, mubar, d}
+          {xLdQNVu1bar, mubar, s}
+          {xLdQNVu1bar, tabar, b}
+          {xLdQNVu1bar, tabar, d}
+          {xLdQNVu1bar, tabar, s}
+          {xLdQNVu2, bbar, e}
+          {xLdQNVu2, dbar, e}
+          {xLdQNVu2, sbar, e}
+          {xLdQNVu2, bbar, mu}
+          {xLdQNVu2, dbar, mu}
+          {xLdQNVu2, sbar, mu}
+          {xLdQNVu2, bbar, ta}
+          {xLdQNVu2, dbar, ta}
+          {xLdQNVu2, sbar, ta}
+          {xLdQNVu2bar, ebar, b}
+          {xLdQNVu2bar, ebar, d}
+          {xLdQNVu2bar, ebar, s}
+          {xLdQNVu2bar, mubar, b}
+          {xLdQNVu2bar, mubar, d}
+          {xLdQNVu2bar, mubar, s}
+          {xLdQNVu2bar, tabar, b}
+          {xLdQNVu2bar, tabar, d}
+          {xLdQNVu2bar, tabar, s}
+          {xLdQNVu3, bbar, e}
+          {xLdQNVu3, dbar, e}
+          {xLdQNVu3, sbar, e}
+          {xLdQNVu3, bbar, mu}
+          {xLdQNVu3, dbar, mu}
+          {xLdQNVu3, sbar, mu}
+          {xLdQNVu3, bbar, ta}
+          {xLdQNVu3, dbar, ta}
+          {xLdQNVu3, sbar, ta}
+          {xLdQNVu3bar, ebar, b}
+          {xLdQNVu3bar, ebar, d}
+          {xLdQNVu3bar, ebar, s}
+          {xLdQNVu3bar, mubar, b}
+          {xLdQNVu3bar, mubar, d}
+          {xLdQNVu3bar, mubar, s}
+          {xLdQNVu3bar, tabar, b}
+          {xLdQNVu3bar, tabar, d}
+          {xLdQNVu3bar, tabar, s}
+          {W, N1, e}
+          {W, N1, mu}
+          {W, N1, ta}
+          {W, N2, e}
+          {W, N2, mu}
+          {W, N2, ta}
+          {W, N3, e}
+          {W, N3, mu}
+          {W, N3, ta}
+          {Wbar, ebar, N1}
+          {Wbar, ebar, N2}
+          {Wbar, ebar, N3}
+          {Wbar, mubar, N1}
+          {Wbar, mubar, N2}
+          {Wbar, mubar, N3}
+          {Wbar, tabar, N1}
+          {Wbar, tabar, N2}
+          {Wbar, tabar, N3}
+          {W, ve, e}
+          {W, vm, mu}
+          {W, vt, ta}
+          {Wbar, ebar, ve}
+          {Wbar, mubar, vm}
+          {Wbar, tabar, vt}
+          {xduNeUm1, ebar, N1}
+          {xduNeUm2, mubar, N1}
+          {xduNeUm3, tabar, N1}
+          {xduNeVm1, ebar, N1}
+          {xduNeVm2, mubar, N1}
+          {xduNeVm3, tabar, N1}
+          {xduNeUm1bar, N1, e}
+          {xduNeUm2bar, N1, mu}
+          {xduNeUm3bar, N1, ta}
+          {xduNeVm1bar, N1, e}
+          {xduNeVm2bar, N1, mu}
+          {xduNeVm3bar, N1, ta}
+      - Quantum number Q conserved in all vertices.
+      - Quantum number Y conserved in all vertices.
+   * particles.py written.
+   * parameters.py written.
+#
+# Vertex definitions
+#
+
+   * 1216 vertices written.
+   * vertices.py written.
+#
+# Lorentz structure definitions
+#
+
+   * 20 lorentz structures written.
+   * lorentz.py written.
+#
+# Coupling definitions
+#
+
+   * 586 couplings written.
+   * couplings.py written.
+#
+# Coupling order definitions
+#
+
+   * 0 couplings orders written.
+   * coupling_orders.py written.
+#
+# Decay definitions
+#
+
+   * 15 decays written.
+   * decay.py not written
+#
+# CTCoupling definitions
+#
+
+   * 0 CTcouplings written.
+   * CT_couplings.py written.

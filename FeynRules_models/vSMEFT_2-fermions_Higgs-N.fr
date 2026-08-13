@@ -1,0 +1,253 @@
+(* **************************************************************************************************************** *)
+(* FeynRules Model file for the vSMEFT - the effective field theory (EFT)                                           *)
+(* of the Standard Model (SM) extended with right-handed (RH) neutrinos, NR.                                        *)
+(* Contains dimension-5 and dimension-6 two-fermion operators with NR.                                              *)
+(* The Lagrangian is written in the Feynman Gauge.		 	     	                                                *)
+(*										                                                                            *)
+(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			                                                *)
+(*										                                                                            *)
+(* The dimension-5 and dimension-6 interactions were originally implemented in                                      *)
+(* J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665].    *)
+(* The present model implementation is described in A. Titov, arXiv:2511.10733.                                     *)
+(* Please cite accordingly.					     		                                                            *)
+(*										                                                                            *)
+(* Feynman gauge is set to true.						                                                            *)
+(* **************************************************************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "vSMEFT_2-fermions_Higgs-N";
+
+M$Information = {
+  Authors      -> {"A. Titov"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"J.M. Butterworth, M. Chala, C. Englert, M. Spannowsky and A. Titov, PRD 100 (2019) 115019 [arXiv:1909.04665]",
+                   "A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+FeynmanGauge = True;
+
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+(* v2.0: Public release of the model files containing all baryon-number-conserving dimension-5 and dimension-6 operators *)
+(* v1.0: Public release of the model file containing dimension-5 and dimension-6 Higgs-NR operators *)
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+M$Parameters = {
+	(* External Parameters *)
+ 
+    cNNB == {
+        ParameterType -> External,
+        BlockName     -> OPERATORNNB,
+        Indices       -> {Index[HNLgeneration], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNNB[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NNB],
+        Description -> "Wilson coefficients cNNB"
+    },
+
+    cNNH == {
+        ParameterType -> External,
+        BlockName     -> OPERATORNNH,
+        Indices       -> {Index[HNLgeneration], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNNH[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NNH],
+        Description -> "Wilson coefficients cNNH"
+    },
+
+    cNB == {
+        ParameterType -> External,
+        BlockName     -> OPERATORNB,
+        Indices       -> {Index[Generation], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNB[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NB],
+        Description -> "Wilson coefficients cNB"
+    },
+    
+    cNW == {
+        ParameterType -> External,
+        BlockName     -> OPERATORNW,
+        Indices       -> {Index[Generation], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNW[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NW],
+        Description -> "Wilson coefficients cNW"
+    },
+    
+    cHN == {
+        ParameterType -> External,
+        BlockName     -> OPERATORHN,
+        Indices       -> {Index[HNLgeneration], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Hermitian -> True,
+        Value        -> {cHN[1, 1] -> 0.0},
+        Definitions -> {cHN[i_?NumericQ,j_?NumericQ] :> cHN[j,i] /; i > j},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, HN],
+        Description -> "Wilson coefficients cHN"
+    },
+
+    cHNe == {
+        ParameterType -> External,
+        BlockName     -> OPERATORHNe,
+        Indices       -> {Index[HNLgeneration], Index[Generation]},
+        ComplexParameter -> False,
+        Value        -> {cHNe[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, HNe],
+        Description -> "Wilson coefficients cHNe"
+    },
+    
+    cLNH == {
+        ParameterType -> External,
+        BlockName     -> OPERATORLNH,
+        Indices       -> {Index[Generation], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cLNH[i_?NumericQ, j_?NumericQ] -> 0.0},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, LNH],
+        Description -> "Wilson coefficients cLNH"
+    },
+
+	(* Internal Parameters *)
+ 
+    cNA == {
+        ParameterType -> Internal,
+        BlockName     -> OPERATORNA,
+        Indices       -> {Index[Generation], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNA[i_?NumericQ, j_?NumericQ] -> cNB[i, j] cw + cNW[i, j] sw},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NA],
+        Description -> "Wilson coefficients cNA"
+    },
+    
+    cNZ == {
+        ParameterType -> Internal,
+        BlockName     -> OPERATORNZ,
+        Indices       -> {Index[Generation], Index[HNLgeneration]},
+        ComplexParameter -> False,
+        Value        -> {cNZ[i_?NumericQ, j_?NumericQ] -> - cNB[i, j] sw + cNW[i, j] cw},
+        InteractionOrder -> {NP, 1},
+        TeX         -> Subscript[c, NZ],
+        Description -> "Wilson coefficients cNZ"
+    }
+
+};
+
+
+M$InteractionOrderHierarchy = {
+	{QCD,1},
+	{QED,2},
+    {NP,2}
+};
+
+(*M$InteractionOrderLimit = {
+    {QED,4}
+};*)
+
+
+(* ************************************* *)
+(* *****   Dimension-5 Lagrangian  ***** *)
+(* ************************************* *)
+
+ONNB := Block[{opNNB,sp1,sp2,sp3,gg1,gg2},
+    
+    opNNB = ExpandIndices[cNNB[gg1,gg2] (I/2) anti[CC[NR[sp1,gg1]]].(Ga[mu,sp1,sp2].Ga[nu,sp2,sp3] - Ga[nu,sp1,sp2].Ga[mu,sp2,sp3]).NR[sp3,gg2] FS[B,mu,nu]];
+    
+    opNNB + HC[opNNB]
+];
+
+ONNH := Block[{opNNH,sp1,ii,gg1,gg2,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    opNNH = ExpandIndices[cNNH[gg1,gg2] anti[CC[NR[sp1,gg1]]].NR[sp1,gg2] Phibar[ii] Phi[ii]];
+    
+    opNNH + HC[opNNH]/.feynmangaugerules
+];
+
+LNHiggsD5 := Block[{mNNH,sp1,gg1,gg2},
+    
+    mNNH = ExpandIndices[-(1/2) (vev^2/Lambda) cNNH[gg1,gg2] anti[CC[NR[sp1,gg1]]].NR[sp1,gg2]]; (* finite renorm; removes vev^2 NRcbar NR term from ONNH *)
+    
+    mNNH + HC[mNNH]
+];
+
+LND5 := (ONNB+ONNH)/Lambda;
+
+
+(* ************************************* *)
+(* *****   Dimension-6 Lagrangian  ***** *)
+(* ************************************* *)
+
+ONB := Block[{opNB,mu,nu,sp1,sp2,sp3,ii,jj,ff,gg,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    opNB = ExpandIndices[cNB[ff,gg] (I/2) LLbar[sp1,ii,ff].(Ga[mu,sp1,sp2].Ga[nu,sp2,sp3] - Ga[nu,sp1,sp2].Ga[mu,sp2,sp3]).NR[sp3,gg] Eps[ii, jj] Phibar[jj] FS[B,mu,nu]];
+    
+    opNB + HC[opNB]/.feynmangaugerules
+];
+
+ONW := Block[{opNW,mu,nu,sp1,sp2,sp3,ii,jj,kk,qq,ff,gg,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    opNW = ExpandIndices[cNW[ff,gg] (I/2) LLbar[sp1,ii,ff].(Ga[mu,sp1,sp2].Ga[nu,sp2,sp3] - Ga[nu,sp1,sp2].Ga[mu,sp2,sp3]).NR[sp3,gg] 2 Ta[qq,ii,jj] Eps[jj, kk] Phibar[kk] FS[Wi,mu,nu,qq]];
+    
+    opNW + HC[opNW]/.feynmangaugerules
+];
+
+OHN := Block[{opHN,mu,sp1,sp2,ii,gg1,gg2,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    opHN = ExpandIndices[cHN[gg1,gg2] (NRbar[sp1,gg1].Ga[mu,sp1,sp2].NR[sp2,gg2]) I (Phibar[ii] DC[Phi[ii],mu] - DC[Phibar[ii],mu] Phi[ii])];
+    
+    opHN/.feynmangaugerules
+];
+
+OHNe := Block[{opHNe,mu,sp1,sp2,ii,jj,ff,gg,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+
+    opHNe = ExpandIndices[cHNe[gg,ff] (NRbar[sp1,gg].Ga[mu,sp1,sp2].lR[sp2,ff]) (I HC[Eps[ii, jj] Phibar[jj]] DC[Phi[ii],mu])];
+    
+    opHNe + HC[opHNe]/.feynmangaugerules
+];
+
+OLNH := Block[{opLNH,sp1,ii,jj,kk,ff,gg,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+
+    opLNH = ExpandIndices[cLNH[ff,gg] LLbar[sp1,ii,ff].NR[sp1,gg] Eps[ii, jj] Phibar[jj] Phibar[kk] Phi[kk]];
+    
+    opLNH + HC[opLNH]/.feynmangaugerules
+];
+
+LNHiggsD6 := Block[{yukLNH,sp1,ii,jj,ff,gg,feynmangaugerules},
+    feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar ->0}, {}];
+    
+    yukLNH = ExpandIndices[-(1/2) (vev^2/Lambda^2) cLNH[ff,gg] LLbar[sp1,ii,ff].NR[sp1,gg] Eps[ii, jj] Phibar[jj]]; (* finite renorm; removes vev^3 vLbar NR term from OLNH *)
+    
+    yukLNH + HC[yukLNH]/.feynmangaugerules
+];
+
+LND6 := (ONB + ONW + OHN + OHNe + OLNH)/Lambda^2;
+
+
+(* ***************************************************** *)
+(* *****     Full Higgs-N effective Lagrangian     ***** *)
+(* ***************************************************** *)
+
+LeffHiggsN:= LNSM + LNHiggsD5 + LNHiggsD6 + LND5 + LND6;

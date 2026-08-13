@@ -1,0 +1,42 @@
+(* **************************************************************************************************************** *)
+(* FeynRules Model file for the vSMEFT - the effective field theory (EFT)                                           *)
+(* of the Standard Model (SM) extended with right-handed (RH) neutrinos, NR.                                        *)
+(* Combines effective operators with NR of dimension-5 and dimension-6.                                             *)
+(*										                                                                                              *)
+(* Contact author: A. Titov [arsenii.titov [at] unipd.it]			                                                      *)
+(*										                                                                                              *)
+(* The present model implementation is described in A. Titov, arXiv:2511.10733.                                     *)
+(* Please cite accordingly.					     		                                                                        *)
+(*										                                                                                              *)
+(* Feynman gauge is set to true.						                                                                        *)
+(* **************************************************************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "vSMEFT";
+
+M$Information = {
+  Authors      -> {"A. Titov"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+FeynmanGauge = True;
+
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+(* v2.0: Public release of the model files containing all baryon-number-conserving dimension-5 and dimension-6 operators *)
+(* v1.0: Public release of the model file containing dimension-5 and dimension-6 Higgs-NR operators *)
+
+
+(* ***************************************************** *)
+(* *****          Full vSMEFT Lagrangian           ***** *)
+(* ***************************************************** *)
+
+LvSMEFT:= LeffHiggsN + LN4fermions1Aux + LN4fermions2Aux;

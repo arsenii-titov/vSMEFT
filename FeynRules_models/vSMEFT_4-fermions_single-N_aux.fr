@@ -1,0 +1,295 @@
+(* **************************************************************************************************************** *)
+(* MadGraph-compatible auxiliary-field implementation of the single-N dimension-6 four-fermion vSMEFT operators.    *)
+(*                                                                                                                  *)
+(* This file replaces vSMEFT_4-fermions.fr.  Load it after SM_v_Majorana.fr and vSM.fr.                             *)
+(* Every four-fermion contact term is represented by two three-point vertices joined by a non-propagating           *)
+(* auxiliary field.  For every current channel two auxiliaries, U and V, are used. Their UFO propagators are        *)
+(* +i/Lambda^2 and -i/Lambda^2.  The U/V sum cancels all current-current self contractions and leaves only the      *)
+(* requested cross-current operator plus its Hermitian conjugate.                                                   *)
+(*                                                                                                                  *)
+(* IMPORTANT: after WriteUFO, run patch_vSMEFT_aux_ufo.py on the generated UFO directory.                           *)
+(* The patch installs the constant propagators and marks all auxiliaries as non-propagating.                        *)
+(*                                                                                                                  *)
+(* The model contains one NR field, NR[...,1].  The corresponding fixed HNL label is not retained as a redundant    *)
+(* Wilson-coefficient index: all five coefficient tensors therefore carry only the three SM-generation indices.     *)
+(* **************************************************************************************************************** *)
+
+M$ModelName = "vSMEFT_4-fermions_single-N_aux";
+
+M$Information = {
+  Authors      -> {"A. Titov", "auxiliary-field reformulation prepared with Codex"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"G.Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 09 (2021) 039 [arXiv:2105.13851]",
+                   "R. Beltran, G. Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 01 (2022) 044 [arXiv:2110.15096]",
+                   "A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+
+FeynmanGauge = True;
+
+M$Parameters = {
+  (*gAux4F == {
+    ParameterType -> Internal, Value -> 1,
+    InteractionOrder -> {AUX,1}, TeX -> Subscript[g,aux],
+    Description -> "Unit bookkeeping coupling for non-propagating four-fermion auxiliaries"
+  },*)
+  cLNLe == {
+    ParameterType -> External, BlockName -> OPERATORLNLe,
+    Indices -> {Index[Generation],Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Value -> {cLNLe[i_?NumericQ,j_?NumericQ,k_?NumericQ] -> 0.0},
+    InteractionOrder -> {NP,1}, TeX -> Subscript[c,LNLe],
+    Description -> "Wilson coefficients cLNLe"
+  },
+  cduNe == {
+    ParameterType -> External, BlockName -> OPERATORduNe,
+    Indices -> {Index[Generation],Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Value -> {cduNe[i_?NumericQ,j_?NumericQ,k_?NumericQ] -> 0.0},
+    InteractionOrder -> {NP,1}, TeX -> Subscript[c,duNe],
+    Description -> "Wilson coefficients cduNe"
+  },
+  cLNQd == {
+    ParameterType -> External, BlockName -> OPERATORLNQd,
+    Indices -> {Index[Generation],Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Value -> {cLNQd[i_?NumericQ,j_?NumericQ,k_?NumericQ] -> 0.0},
+    InteractionOrder -> {NP,1}, TeX -> Subscript[c,LNQd],
+    Description -> "Wilson coefficients cLNQd"
+  },
+  cLdQN == {
+    ParameterType -> External, BlockName -> OPERATORLdQN,
+    Indices -> {Index[Generation],Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Value -> {cLdQN[i_?NumericQ,j_?NumericQ,k_?NumericQ] -> 0.0},
+    InteractionOrder -> {NP,1}, TeX -> Subscript[c,LdQN],
+    Description -> "Wilson coefficients cLdQN"
+  },
+  cQuNL == {
+    ParameterType -> External, BlockName -> OPERATORQuNL,
+    Indices -> {Index[Generation],Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Value -> {cQuNL[i_?NumericQ,j_?NumericQ,k_?NumericQ] -> 0.0},
+    InteractionOrder -> {NP,1}, TeX -> Subscript[c,QuNL],
+    Description -> "Wilson coefficients cQuNL"
+  }
+};
+
+M$InteractionOrderHierarchy = {{QCD,1},{QED,2},{NP,2},{AUX,3}};
+
+(* Physical auxiliary fields. All masses are placeholders; the UFO patch replaces them by Lambda solely as the     *)
+(* normalization in the constant propagator. They cannot occur as external states after propagating=False is set.   *)
+M$ClassesDescription = {
+  (* O_LNLe: U and V weak doublets, Y=-1/2. *)
+  S[201] == {ClassName -> xLNLeU0, ClassMembers -> {xLNLeU01,xLNLeU02,xLNLeU03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XLU0","XLU01","XLU02","XLU03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010011,9010012,9010013},
+    ParticleName -> {"x_lnle_u0_1","x_lnle_u0_2","x_lnle_u0_3"},
+    AntiParticleName -> {"x_lnle_u0_1~","x_lnle_u0_2~","x_lnle_u0_3~"}},
+  S[202] == {ClassName -> xLNLeUm, ClassMembers -> {xLNLeUm1,xLNLeUm2,xLNLeUm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XLUm","XLUm1","XLUm2","XLUm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010021,9010022,9010023},
+    ParticleName -> {"x_lnle_um_1","x_lnle_um_2","x_lnle_um_3"},
+    AntiParticleName -> {"x_lnle_up_1","x_lnle_up_2","x_lnle_up_3"}},
+  S[203] == {ClassName -> xLNLeV0, ClassMembers -> {xLNLeV01,xLNLeV02,xLNLeV03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XLV0","XLV01","XLV02","XLV03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010031,9010032,9010033},
+    ParticleName -> {"x_lnle_v0_1","x_lnle_v0_2","x_lnle_v0_3"},
+    AntiParticleName -> {"x_lnle_v0_1~","x_lnle_v0_2~","x_lnle_v0_3~"}},
+  S[204] == {ClassName -> xLNLeVm, ClassMembers -> {xLNLeVm1,xLNLeVm2,xLNLeVm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XLVm","XLVm1","XLVm2","XLVm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010041,9010042,9010043},
+    ParticleName -> {"x_lnle_vm_1","x_lnle_vm_2","x_lnle_vm_3"},
+    AntiParticleName -> {"x_lnle_vp_1","x_lnle_vp_2","x_lnle_vp_3"}},
+
+  (* O_LNQd: U and V weak doublets, Y=-1/2. *)
+  S[205] == {ClassName -> xLNQdU0, ClassMembers -> {xLNQdU01,xLNQdU02,xLNQdU03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XQU0","XQU01","XQU02","XQU03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010051,9010052,9010053},
+    ParticleName -> {"x_lnqd_u0_1","x_lnqd_u0_2","x_lnqd_u0_3"},
+    AntiParticleName -> {"x_lnqd_u0_1~","x_lnqd_u0_2~","x_lnqd_u0_3~"}},
+  S[206] == {ClassName -> xLNQdUm, ClassMembers -> {xLNQdUm1,xLNQdUm2,xLNQdUm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XQUm","XQUm1","XQUm2","XQUm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010061,9010062,9010063},
+    ParticleName -> {"x_lnqd_um_1","x_lnqd_um_2","x_lnqd_um_3"},
+    AntiParticleName -> {"x_lnqd_up_1","x_lnqd_up_2","x_lnqd_up_3"}},
+  S[207] == {ClassName -> xLNQdV0, ClassMembers -> {xLNQdV01,xLNQdV02,xLNQdV03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XQV0","XQV01","XQV02","XQV03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010071,9010072,9010073},
+    ParticleName -> {"x_lnqd_v0_1","x_lnqd_v0_2","x_lnqd_v0_3"},
+    AntiParticleName -> {"x_lnqd_v0_1~","x_lnqd_v0_2~","x_lnqd_v0_3~"}},
+  S[208] == {ClassName -> xLNQdVm, ClassMembers -> {xLNQdVm1,xLNQdVm2,xLNQdVm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XQVm","XQVm1","XQVm2","XQVm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010081,9010082,9010083},
+    ParticleName -> {"x_lnqd_vm_1","x_lnqd_vm_2","x_lnqd_vm_3"},
+    AntiParticleName -> {"x_lnqd_vp_1","x_lnqd_vp_2","x_lnqd_vp_3"}},
+
+  (* O_QuNL: U and V weak doublets, Y=-1/2. *)
+  S[209] == {ClassName -> xQuNLU0, ClassMembers -> {xQuNLU01,xQuNLU02,xQuNLU03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XRU0","XRU01","XRU02","XRU03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010091,9010092,9010093},
+    ParticleName -> {"x_qunl_u0_1","x_qunl_u0_2","x_qunl_u0_3"},
+    AntiParticleName -> {"x_qunl_u0_1~","x_qunl_u0_2~","x_qunl_u0_3~"}},
+  S[210] == {ClassName -> xQuNLUm, ClassMembers -> {xQuNLUm1,xQuNLUm2,xQuNLUm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XRUm","XRUm1","XRUm2","XRUm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010101,9010102,9010103},
+    ParticleName -> {"x_qunl_um_1","x_qunl_um_2","x_qunl_um_3"},
+    AntiParticleName -> {"x_qunl_up_1","x_qunl_up_2","x_qunl_up_3"}},
+  S[211] == {ClassName -> xQuNLV0, ClassMembers -> {xQuNLV01,xQuNLV02,xQuNLV03},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> 0}, PropagatorLabel -> {"XRV0","XRV01","XRV02","XRV03"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010111,9010112,9010113},
+    ParticleName -> {"x_qunl_v0_1","x_qunl_v0_2","x_qunl_v0_3"},
+    AntiParticleName -> {"x_qunl_v0_1~","x_qunl_v0_2~","x_qunl_v0_3~"}},
+  S[212] == {ClassName -> xQuNLVm, ClassMembers -> {xQuNLVm1,xQuNLVm2,xQuNLVm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XRVm","XRVm1","XRVm2","XRVm3"}, PropagatorType -> D,
+    PropagatorArrow -> Forward, PDG -> {9010121,9010122,9010123},
+    ParticleName -> {"x_qunl_vm_1","x_qunl_vm_2","x_qunl_vm_3"},
+    AntiParticleName -> {"x_qunl_vp_1","x_qunl_vp_2","x_qunl_vp_3"}},
+
+  (* O_LdQN: colored U and V weak doublets, (3,2)_(1/6). *)
+  S[213] == {ClassName -> xLdQNUu, ClassMembers -> {xLdQNUu1,xLdQNUu2,xLdQNUu3},
+    Indices -> {Index[Generation],Index[Colour]}, FlavorIndex -> Generation, SelfConjugate -> False,
+    Mass -> 0, Width -> 0, QuantumNumbers -> {Q -> 2/3},
+    PropagatorLabel -> {"XDUu","XDUu1","XDUu2","XDUu3"}, PropagatorType -> D, PropagatorArrow -> Forward,
+    PDG -> {9010131,9010132,9010133}, ParticleName -> {"x_ldqn_uu_1","x_ldqn_uu_2","x_ldqn_uu_3"},
+    AntiParticleName -> {"x_ldqn_uu_1~","x_ldqn_uu_2~","x_ldqn_uu_3~"}},
+  S[214] == {ClassName -> xLdQNUd, ClassMembers -> {xLdQNUd1,xLdQNUd2,xLdQNUd3},
+    Indices -> {Index[Generation],Index[Colour]}, FlavorIndex -> Generation, SelfConjugate -> False,
+    Mass -> 0, Width -> 0, QuantumNumbers -> {Q -> -1/3},
+    PropagatorLabel -> {"XDUd","XDUd1","XDUd2","XDUd3"}, PropagatorType -> D, PropagatorArrow -> Forward,
+    PDG -> {9010141,9010142,9010143}, ParticleName -> {"x_ldqn_ud_1","x_ldqn_ud_2","x_ldqn_ud_3"},
+    AntiParticleName -> {"x_ldqn_ud_1~","x_ldqn_ud_2~","x_ldqn_ud_3~"}},
+  S[215] == {ClassName -> xLdQNVu, ClassMembers -> {xLdQNVu1,xLdQNVu2,xLdQNVu3},
+    Indices -> {Index[Generation],Index[Colour]}, FlavorIndex -> Generation, SelfConjugate -> False,
+    Mass -> 0, Width -> 0, QuantumNumbers -> {Q -> 2/3},
+    PropagatorLabel -> {"XDVu","XDVu1","XDVu2","XDVu3"}, PropagatorType -> D, PropagatorArrow -> Forward,
+    PDG -> {9010151,9010152,9010153}, ParticleName -> {"x_ldqn_vu_1","x_ldqn_vu_2","x_ldqn_vu_3"},
+    AntiParticleName -> {"x_ldqn_vu_1~","x_ldqn_vu_2~","x_ldqn_vu_3~"}},
+  S[216] == {ClassName -> xLdQNVd, ClassMembers -> {xLdQNVd1,xLdQNVd2,xLdQNVd3},
+    Indices -> {Index[Generation],Index[Colour]}, FlavorIndex -> Generation, SelfConjugate -> False,
+    Mass -> 0, Width -> 0, QuantumNumbers -> {Q -> -1/3},
+    PropagatorLabel -> {"XDVd","XDVd1","XDVd2","XDVd3"}, PropagatorType -> D, PropagatorArrow -> Forward,
+    PDG -> {9010161,9010162,9010163}, ParticleName -> {"x_ldqn_vd_1","x_ldqn_vd_2","x_ldqn_vd_3"},
+    AntiParticleName -> {"x_ldqn_vd_1~","x_ldqn_vd_2~","x_ldqn_vd_3~"}},
+
+  (* O_duNe: charged vector auxiliaries. *)
+  V[201] == {ClassName -> xduNeUm, ClassMembers -> {xduNeUm1,xduNeUm2,xduNeUm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XVN_U","XVN_U1","XVN_U2","XVN_U3"},
+    PropagatorType -> Wavy, PropagatorArrow -> Forward, PDG -> {9020011,9020012,9020013},
+    ParticleName -> {"x_dune_um_1","x_dune_um_2","x_dune_um_3"},
+    AntiParticleName -> {"x_dune_up_1","x_dune_up_2","x_dune_up_3"}},
+  V[202] == {ClassName -> xduNeVm, ClassMembers -> {xduNeVm1,xduNeVm2,xduNeVm3},
+    Indices -> {Index[Generation]}, FlavorIndex -> Generation, SelfConjugate -> False, Mass -> 0, Width -> 0,
+    QuantumNumbers -> {Q -> -1}, PropagatorLabel -> {"XVN_V","XVN_V1","XVN_V2","XVN_V3"},
+    PropagatorType -> Wavy, PropagatorArrow -> Forward, PDG -> {9020021,9020022,9020023},
+    ParticleName -> {"x_dune_vm_1","x_dune_vm_2","x_dune_vm_3"},
+    AntiParticleName -> {"x_dune_vp_1","x_dune_vp_2","x_dune_vp_3"}},
+
+  (* Unphysical gauge-multiplet containers used only to write compact gauge-invariant interactions. *)
+  S[221] == {ClassName -> xLNLeU, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xLNLeU[1,ff_] :> xLNLeU0[ff], xLNLeU[2,ff_] :> xLNLeUm[ff]}},
+  S[222] == {ClassName -> xLNLeV, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xLNLeV[1,ff_] :> xLNLeV0[ff], xLNLeV[2,ff_] :> xLNLeVm[ff]}},
+  S[223] == {ClassName -> xLNQdU, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xLNQdU[1,ff_] :> xLNQdU0[ff], xLNQdU[2,ff_] :> xLNQdUm[ff]}},
+  S[224] == {ClassName -> xLNQdV, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xLNQdV[1,ff_] :> xLNQdV0[ff], xLNQdV[2,ff_] :> xLNQdVm[ff]}},
+  S[225] == {ClassName -> xQuNLU, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xQuNLU[1,ff_] :> xQuNLU0[ff], xQuNLU[2,ff_] :> xQuNLUm[ff]}},
+  S[226] == {ClassName -> xQuNLV, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> -1/2}, Definitions -> {xQuNLV[1,ff_] :> xQuNLV0[ff], xQuNLV[2,ff_] :> xQuNLVm[ff]}},
+  S[227] == {ClassName -> xLdQNU, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation],Index[Colour]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> 1/6}, Definitions -> {
+      xLdQNU[1,ff_,cc_] :> xLdQNUu[ff,cc], xLdQNU[2,ff_,cc_] :> xLdQNUd[ff,cc]}},
+  S[228] == {ClassName -> xLdQNV, Unphysical -> True,
+    Indices -> {Index[SU2D],Index[Generation],Index[Colour]}, FlavorIndex -> SU2D, SelfConjugate -> False,
+    QuantumNumbers -> {Y -> 1/6}, Definitions -> {
+      xLdQNV[1,ff_,cc_] :> xLdQNVu[ff,cc], xLdQNV[2,ff_,cc_] :> xLdQNVd[ff,cc]}}
+};
+
+(* For a channel J1 J2 + h.c., the pattern is
+     ( U J1 - Ubar C J2 + V J1 + Vbar C J2 )/Sqrt[2] + h.c.
+   together with Prop(U)=+i/Lambda^2 and Prop(V)=-i/Lambda^2.
+   The relative sign compensates the two three-point vertex factors and retains +C J1 J2/Lambda^2. *)
+
+LauxLNLe := Block[{bare,ii,jj,sp1,sp2,ff1,ff2,ff3},
+  bare = ExpandIndices[(
+      gAux4F xLNLeU[ii,ff1] LLbar[sp1,ii,ff1].NR[sp1,1]
+    - xLNLeUbar[ii,ff1] cLNLe[ff1,ff2,ff3] Eps[ii,jj] LLbar[sp2,jj,ff2].lR[sp2,ff3]
+    + gAux4F xLNLeV[ii,ff1] LLbar[sp1,ii,ff1].NR[sp1,1]
+    + xLNLeVbar[ii,ff1] cLNLe[ff1,ff2,ff3] Eps[ii,jj] LLbar[sp2,jj,ff2].lR[sp2,ff3]
+    )/Sqrt[2]];
+  bare + HC[bare]
+];
+
+LauxLNQd := Block[{bare,ii,jj,sp1,sp2,cc,ff1,ff2,ff3},
+  bare = ExpandIndices[(
+      gAux4F xLNQdU[ii,ff1] LLbar[sp1,ii,ff1].NR[sp1,1]
+    - xLNQdUbar[ii,ff1] cLNQd[ff1,ff2,ff3] Eps[ii,jj] QLbar[sp2,jj,ff2,cc].dR[sp2,ff3,cc]
+    + gAux4F xLNQdV[ii,ff1] LLbar[sp1,ii,ff1].NR[sp1,1]
+    + xLNQdVbar[ii,ff1] cLNQd[ff1,ff2,ff3] Eps[ii,jj] QLbar[sp2,jj,ff2,cc].dR[sp2,ff3,cc]
+    )/Sqrt[2]];
+  bare + HC[bare]
+];
+
+LauxQuNL := Block[{bare,ii,sp1,sp2,cc,ff1,ff2,ff3},
+  bare = ExpandIndices[(
+      gAux4F xQuNLUbar[ii,ff3] NRbar[sp1,1].LL[sp1,ii,ff3]
+    - xQuNLU[ii,ff3] cQuNL[ff1,ff2,ff3] QLbar[sp2,ii,ff1,cc].uR[sp2,ff2,cc]
+    + gAux4F xQuNLVbar[ii,ff3] NRbar[sp1,1].LL[sp1,ii,ff3]
+    + xQuNLV[ii,ff3] cQuNL[ff1,ff2,ff3] QLbar[sp2,ii,ff1,cc].uR[sp2,ff2,cc]
+    )/Sqrt[2]];
+  bare + HC[bare]
+];
+
+LauxLdQN := Block[{bare,ii,jj,sp1,sp2,cc,ff1,ff2,ff3},
+  bare = ExpandIndices[(
+      gAux4F xLdQNU[jj,ff3,cc] QLbar[sp2,jj,ff3,cc].NR[sp2,1]
+    - xLdQNUbar[jj,ff3,cc] cLdQN[ff1,ff2,ff3] Eps[ii,jj] LLbar[sp1,ii,ff1].dR[sp1,ff2,cc]
+    + gAux4F xLdQNV[jj,ff3,cc] QLbar[sp2,jj,ff3,cc].NR[sp2,1]
+    + xLdQNVbar[jj,ff3,cc] cLdQN[ff1,ff2,ff3] Eps[ii,jj] LLbar[sp1,ii,ff1].dR[sp1,ff2,cc]
+    )/Sqrt[2]];
+  bare + HC[bare]
+];
+
+LauxduNe := Block[{bare,mu,sp1,sp2,sp3,sp4,cc,ff1,ff2,ff3},
+  bare = ExpandIndices[(
+      gAux4F xduNeUmbar[mu,ff3] NRbar[sp3,1].Ga[mu,sp3,sp4].lR[sp4,ff3]
+    - xduNeUm[mu,ff3] cduNe[ff1,ff2,ff3] dRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].uR[sp2,ff2,cc]
+    + gAux4F xduNeVmbar[mu,ff3] NRbar[sp3,1].Ga[mu,sp3,sp4].lR[sp4,ff3]
+    + xduNeVm[mu,ff3] cduNe[ff1,ff2,ff3] dRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].uR[sp2,ff2,cc]
+    )/Sqrt[2]];
+  bare + HC[bare]
+];
+
+
+(* ******************************************************** *)
+(* *****   Full single-N four-fermion Lagrangian      ***** *)
+(* ******************************************************** *)
+
+LN4fermions1Aux := LauxLNLe + LauxduNe + LauxLNQd + LauxLdQN + LauxQuNL;
+
+Leff4fermions1Aux := LNSM + LN4fermions1Aux;

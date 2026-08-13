@@ -1,0 +1,284 @@
+(* **************************************************************************************************************** *)
+(* MadGraph-compatible auxiliary-field implementation of the pair-N dimension-6 four-fermion vSMEFT operators.      *)
+(*                                                                                                                  *)
+(* Load this file after SM_v_Majorana.fr and vSM.fr.  Every four-fermion contact interaction is represented by      *)
+(* two three-point vertices joined by a formal, non-propagating vector field.  For every current channel a U/V      *)
+(* pair is used.  The UFO patch patch_vSMEFT_aux_ufo.py assigns the propagators +i/Lambda^2 and -i/Lambda^2 to U    *)
+(* and V, respectively.  Their sum retains the requested cross-current interaction and cancels the unwanted         *)
+(* current-current self contractions.                                                                               *)
+(*                                                                                                                  *)
+(* All auxiliaries are real SM-singlet vectors.  With the formal quadratic terms                                    *)
+(* Lambda^2 (U_mu U^mu - V_mu V^mu)/2, the source combinations U.(g J_N-C J_f)/Sqrt[2] and                          *)
+(* V.(g J_N+C J_f)/Sqrt[2] form a manifestly Hermitian auxiliary Lagrangian.  Eliminating U and V reproduces        *)
+(* +C J_N.J_f/Lambda^2; the same construction applies to O_NN by setting J_f=J_N.                                   *)
+(*                                                                                                                  *)
+(* IMPORTANT: after WriteUFO, run patch_vSMEFT_aux_ufo.py on the generated UFO directory.                           *)
+(* **************************************************************************************************************** *)
+
+M$ModelName = "vSMEFT_4-fermions_pair-N_aux";
+
+M$Information = {
+  Authors      -> {"A. Titov", "auxiliary-field reformulation prepared with Codex"},
+  Version      -> "2.0",
+  Date         -> "10 August 2026",
+  Institutions -> {"University of Padua"},
+  Emails       -> {"arsenii.titov@unipd.it"},
+  References   -> {"G.Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 09 (2021) 039 [arXiv:2105.13851]",
+                   "R. Beltran, G. Cottin, J.C. Helo, M. Hirsch, A. Titov and Z.S. Wang, JHEP 01 (2022) 044 [arXiv:2110.15096]",
+                   "A. Titov, arXiv:2511.10733"},
+  URLs         -> {"https://github.com/arsenii-titov/vSMEFT.git"}
+};
+
+FeynmanGauge = True;
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+
+M$Parameters = {
+  (*gAux4F == {
+    ParameterType -> Internal,
+    Value -> 1,
+    InteractionOrder -> {AUX,1},
+    TeX -> Subscript[g,aux],
+    Description -> "Unit bookkeeping coupling for non-propagating four-fermion auxiliaries"
+  },*)
+
+  cNN == {
+    ParameterType -> External,
+    BlockName -> OPERATORNN,
+    OrderBlock -> 1,
+    ComplexParameter -> False,
+    Value -> 0.0,
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,NN],
+    Description -> "Wilson coefficient cNN"
+  },
+
+  (* The five real Hermitian flavor tensors expose only their upper-triangular components as independent external
+     parameters.  Definitions maps every lower-triangular entry to its transpose before the vertices are exported.
+     Thus, for example, both cdN[1,2] and cdN[2,1] are controlled by the single UFO input cdN1x2. *)
+
+  ceN == {
+    ParameterType -> External,
+    BlockName -> OPERATOReN,
+    Indices -> {Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Hermitian -> True,
+    Value -> {
+      ceN[1,1] -> 0.0, ceN[1,2] -> 0.0, ceN[1,3] -> 0.0,
+                         ceN[2,2] -> 0.0, ceN[2,3] -> 0.0,
+                                            ceN[3,3] -> 0.0
+    },
+    Definitions -> {
+      ceN[i_?NumericQ,j_?NumericQ] :> ceN[j,i] /; i > j
+    },
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,eN],
+    Description -> "Wilson coefficients ceN"
+  },
+
+  cLN == {
+    ParameterType -> External,
+    BlockName -> OPERATORLN,
+    Indices -> {Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Hermitian -> True,
+    Value -> {
+      cLN[1,1] -> 0.0, cLN[1,2] -> 0.0, cLN[1,3] -> 0.0,
+                         cLN[2,2] -> 0.0, cLN[2,3] -> 0.0,
+                                            cLN[3,3] -> 0.0
+    },
+    Definitions -> {
+      cLN[i_?NumericQ,j_?NumericQ] :> cLN[j,i] /; i > j
+    },
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,LN],
+    Description -> "Wilson coefficients cLN"
+  },
+
+  cuN == {
+    ParameterType -> External,
+    BlockName -> OPERATORuN,
+    Indices -> {Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Hermitian -> True,
+    Value -> {
+      cuN[1,1] -> 0.0, cuN[1,2] -> 0.0, cuN[1,3] -> 0.0,
+                         cuN[2,2] -> 0.0, cuN[2,3] -> 0.0,
+                                            cuN[3,3] -> 0.0
+    },
+    Definitions -> {
+      cuN[i_?NumericQ,j_?NumericQ] :> cuN[j,i] /; i > j
+    },
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,uN],
+    Description -> "Wilson coefficients cuN"
+  },
+
+  cdN == {
+    ParameterType -> External,
+    BlockName -> OPERATORdN,
+    Indices -> {Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Hermitian -> True,
+    Value -> {
+      cdN[1,1] -> 0.0, cdN[1,2] -> 0.0, cdN[1,3] -> 0.0,
+                         cdN[2,2] -> 0.0, cdN[2,3] -> 0.0,
+                                            cdN[3,3] -> 0.0
+    },
+    Definitions -> {
+      cdN[i_?NumericQ,j_?NumericQ] :> cdN[j,i] /; i > j
+    },
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,dN],
+    Description -> "Wilson coefficients cdN"
+  },
+
+  cQN == {
+    ParameterType -> External,
+    BlockName -> OPERATORQN,
+    Indices -> {Index[Generation],Index[Generation]},
+    ComplexParameter -> False,
+    Hermitian -> True,
+    Value -> {
+      cQN[1,1] -> 0.0, cQN[1,2] -> 0.0, cQN[1,3] -> 0.0,
+                         cQN[2,2] -> 0.0, cQN[2,3] -> 0.0,
+                                            cQN[3,3] -> 0.0
+    },
+    Definitions -> {
+      cQN[i_?NumericQ,j_?NumericQ] :> cQN[j,i] /; i > j
+    },
+    InteractionOrder -> {NP,1},
+    TeX -> Subscript[c,QN],
+    Description -> "Wilson coefficients cQN"
+  }
+};
+
+M$InteractionOrderHierarchy = {{QCD,1},{QED,2},{NP,2},{AUX,3}};
+
+
+(* ******************************** *)
+(* *****   Auxiliary vectors  ***** *)
+(* ******************************** *)
+
+(* All masses are placeholders.  The UFO patch replaces them by Lambda as the normalization of the constant        *)
+(* propagator and sets propagating=False, so these fields cannot be generated as external particles.               *)
+M$ClassesDescription = {
+  V[301] == {ClassName -> xNNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XNN_U", PropagatorType -> Wavy,
+    PDG -> 9030011, ParticleName -> "x_pair_nn_u0"},
+  V[302] == {ClassName -> xNNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XNN_V", PropagatorType -> Wavy,
+    PDG -> 9030021, ParticleName -> "x_pair_nn_v0"},
+
+  V[303] == {ClassName -> xeNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XeN_U", PropagatorType -> Wavy,
+    PDG -> 9030031, ParticleName -> "x_pair_en_u0"},
+  V[304] == {ClassName -> xeNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XeN_V", PropagatorType -> Wavy,
+    PDG -> 9030041, ParticleName -> "x_pair_en_v0"},
+
+  V[305] == {ClassName -> xLNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XLN_U", PropagatorType -> Wavy,
+    PDG -> 9030051, ParticleName -> "x_pair_ln_u0"},
+  V[306] == {ClassName -> xLNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XLN_V", PropagatorType -> Wavy,
+    PDG -> 9030061, ParticleName -> "x_pair_ln_v0"},
+
+  V[307] == {ClassName -> xuNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XuN_U", PropagatorType -> Wavy,
+    PDG -> 9030071, ParticleName -> "x_pair_un_u0"},
+  V[308] == {ClassName -> xuNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XuN_V", PropagatorType -> Wavy,
+    PDG -> 9030081, ParticleName -> "x_pair_un_v0"},
+
+  V[309] == {ClassName -> xdNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XdN_U", PropagatorType -> Wavy,
+    PDG -> 9030091, ParticleName -> "x_pair_dn_u0"},
+  V[310] == {ClassName -> xdNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XdN_V", PropagatorType -> Wavy,
+    PDG -> 9030101, ParticleName -> "x_pair_dn_v0"},
+
+  V[311] == {ClassName -> xQNU, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XQN_U", PropagatorType -> Wavy,
+    PDG -> 9030111, ParticleName -> "x_pair_qn_u0"},
+  V[312] == {ClassName -> xQNV, SelfConjugate -> True, Mass -> 0, Width -> 0,
+    PropagatorLabel -> "XQN_V", PropagatorType -> Wavy,
+    PDG -> 9030121, ParticleName -> "x_pair_qn_v0"}
+};
+
+
+(* *********************************************** *)
+(* *****   Auxiliary pair-N interactions     ***** *)
+(* *********************************************** *)
+
+(* For Hermitian currents J_N and J_f, the manifestly Hermitian real-field pattern is
+
+       [ U_mu (g J_N^mu - c J_f^mu) + V_mu (g J_N^mu + c J_f^mu) ]/Sqrt[2].
+
+   Together with the formal quadratic terms Lambda^2 (U_mu U^mu - V_mu V^mu)/2, equivalently
+   Prop(U)=+i g_munu/Lambda^2 and Prop(V)=-i g_munu/Lambda^2, eliminating U and V gives
+   +c J_N.J_f/Lambda^2.  For O_NN one simply sets J_f=J_N. *)
+
+LauxNN := Block[{mu,sp1,sp2},
+  ExpandIndices[(
+      xNNU[mu] (gAux4F-cNN) NRbar[sp1,1].Ga[mu,sp1,sp2].NR[sp2,1]
+    + xNNV[mu] (gAux4F+cNN) NRbar[sp1,1].Ga[mu,sp1,sp2].NR[sp2,1]
+  )/Sqrt[2]]
+];
+
+LauxeN := Block[{mu,sp1,sp2,sp3,sp4,ff1,ff2},
+  ExpandIndices[(
+      gAux4F xeNU[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    - xeNU[mu] ceN[ff1,ff2] lRbar[sp1,ff1].Ga[mu,sp1,sp2].lR[sp2,ff2]
+    + gAux4F xeNV[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    + xeNV[mu] ceN[ff1,ff2] lRbar[sp1,ff1].Ga[mu,sp1,sp2].lR[sp2,ff2]
+  )/Sqrt[2]]
+];
+
+LauxLN := Block[{mu,sp1,sp2,sp3,sp4,ii,ff1,ff2},
+  ExpandIndices[(
+      gAux4F xLNU[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    - xLNU[mu] cLN[ff1,ff2] LLbar[sp1,ii,ff1].Ga[mu,sp1,sp2].LL[sp2,ii,ff2]
+    + gAux4F xLNV[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    + xLNV[mu] cLN[ff1,ff2] LLbar[sp1,ii,ff1].Ga[mu,sp1,sp2].LL[sp2,ii,ff2]
+  )/Sqrt[2]]
+];
+
+LauxuN := Block[{mu,sp1,sp2,sp3,sp4,cc,ff1,ff2},
+  ExpandIndices[(
+      gAux4F xuNU[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    - xuNU[mu] cuN[ff1,ff2] uRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].uR[sp2,ff2,cc]
+    + gAux4F xuNV[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    + xuNV[mu] cuN[ff1,ff2] uRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].uR[sp2,ff2,cc]
+  )/Sqrt[2]]
+];
+
+LauxdN := Block[{mu,sp1,sp2,sp3,sp4,cc,ff1,ff2},
+  ExpandIndices[(
+      gAux4F xdNU[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    - xdNU[mu] cdN[ff1,ff2] dRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].dR[sp2,ff2,cc]
+    + gAux4F xdNV[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    + xdNV[mu] cdN[ff1,ff2] dRbar[sp1,ff1,cc].Ga[mu,sp1,sp2].dR[sp2,ff2,cc]
+  )/Sqrt[2]]
+];
+
+LauxQN := Block[{mu,sp1,sp2,sp3,sp4,cc,ii,ff1,ff2},
+  ExpandIndices[(
+      gAux4F xQNU[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    - xQNU[mu] cQN[ff1,ff2] QLbar[sp1,ii,ff1,cc].Ga[mu,sp1,sp2].QL[sp2,ii,ff2,cc]
+    + gAux4F xQNV[mu] NRbar[sp3,1].Ga[mu,sp3,sp4].NR[sp4,1]
+    + xQNV[mu] cQN[ff1,ff2] QLbar[sp1,ii,ff1,cc].Ga[mu,sp1,sp2].QL[sp2,ii,ff2,cc]
+  )/Sqrt[2]]
+];
+
+
+(* ******************************************************** *)
+(* *****   Full pair-N four-fermion Lagrangian        ***** *)
+(* ******************************************************** *)
+
+LN4fermions2Aux := LauxNN + LauxeN + LauxLN + LauxuN + LauxdN + LauxQN;
+
+Leff4fermions2Aux := LNSM + LN4fermions2Aux;
