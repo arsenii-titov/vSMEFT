@@ -1,4 +1,6 @@
-# FeynRules and UFO model files for <span>$\nu$</span>SMEFT
+# FeynRules and UFO models for <span>$\nu$</span>SMEFT
+
+[![arXiv](https://img.shields.io/badge/arXiv-2511.10733-B31B1B?style=flat-square&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2511.10733)
 
 The <span>$\nu$</span>SMEFT (also known as NSMEFT, SMNEFT or <span>$N_R$</span>SMEFT) is the effective field theory of the Standard Model (SM) extended by right-handed neutrinos, <span>$N_R$</span>. This repository provides FeynRules and UFO implementations of the baryon-number-conserving dimension-five and dimension-six operators involving <span>$N_R$</span>, together with the renormalisable SM + <span>$N_R$</span> Lagrangian.
 
@@ -87,7 +89,7 @@ The auxiliary-field reformulation and its software implementation were developed
 
 3. <a id="ref2022"></a> R. Beltrán, G. Cottin, J. C. Helo, M. Hirsch, A. Titov and Z. S. Wang, *Long-lived heavy neutral leptons at the LHC: four-fermion single-*<span>$N_R$</span> *operators*, [JHEP **01** (2022) 044](https://doi.org/10.1007/JHEP01%282022%29044) [[arXiv:2110.15096](https://arxiv.org/abs/2110.15096)].
 
-4. <a id="ref2025"></a> A. Titov, *FeynRules and UFO model files for* <span>$\nu$</span>*SMEFT: Higgs–*<span>$N_R$</span> *operators of dimensions five and six*, [arXiv:2511.10733](https://arxiv.org/abs/2511.10733).
+4. <a id="ref2025"></a> A. Titov, *FeynRules and UFO models for* <span>$\nu$</span>*SMEFT: operators of dimensions five and six*, [arXiv:2511.10733](https://arxiv.org/abs/2511.10733).
 
 ## License
 
