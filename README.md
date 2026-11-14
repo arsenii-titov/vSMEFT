@@ -1,6 +1,7 @@
 # FeynRules and UFO models for <span>$\nu$</span>SMEFT
 
 [![arXiv](https://img.shields.io/badge/arXiv-2511.10733-B31B1B?style=flat-square&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2511.10733)
+[![Published version](https://img.shields.io/badge/Comput.%20Phys.%20Commun.-331%20%282027%29%20110485-0077B5?style=flat-square)](https://doi.org/10.1016/j.cpc.2026.110485)
 
 The <span>$\nu$</span>SMEFT (also known as NSMEFT, SMNEFT or <span>$N_R$</span>SMEFT) is the effective field theory of the Standard Model (SM) extended by right-handed neutrinos, <span>$N_R$</span>. This repository provides FeynRules and UFO implementations of the baryon-number-conserving dimension-five and dimension-six operators involving <span>$N_R$</span>, together with the renormalisable SM + <span>$N_R$</span> Lagrangian.
 
