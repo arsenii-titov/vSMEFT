@@ -89,7 +89,7 @@ The auxiliary-field reformulation and its software implementation were developed
 
 3. <a id="ref2022"></a> R. Beltrán, G. Cottin, J. C. Helo, M. Hirsch, A. Titov and Z. S. Wang, *Long-lived heavy neutral leptons at the LHC: four-fermion single-*<span>$N_R$</span> *operators*, [JHEP **01** (2022) 044](https://doi.org/10.1007/JHEP01%282022%29044) [[arXiv:2110.15096](https://arxiv.org/abs/2110.15096)].
 
-4. <a id="ref2025"></a> A. Titov, *FeynRules and UFO models for* <span>$\nu$</span>*SMEFT: operators of dimensions five and six*, [arXiv:2511.10733](https://arxiv.org/abs/2511.10733).
+4. <a id="ref2025"></a> A. Titov, *FeynRules and UFO models for* <span>$\nu$</span>*SMEFT: operators of dimensions five and six*, [Comput. Phys. Commun. **331** (2027) 110485](https://doi.org/doi:10.1016/j.cpc.2026.110485) [[arXiv:2511.10733](https://arxiv.org/abs/2511.10733)].
 
 ## License
 
